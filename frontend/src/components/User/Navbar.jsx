@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import { Handbag, Heart, LogOut, Menu, Search, X } from "lucide-react";
 import { useAuthStore } from "../../store/AuthStore";
 const Navbar = () => {
-  const { user } = useAuthStore();
-  const [sidePanelSmall, setSidePanelSmall] = useState(false)
+  const { user,logoutFunction } = useAuthStore();
+  const [sidePanelSmall, setSidePanelSmall] = useState(false);
   return (
     <nav className="py-2 fixed top-0 left-0 w-full z-10 flex flex-col gap-4 md:flex md:justify-between md:items-center md:flex-row md:px-[4vw] md:py-4 bg-white">
       {/* small screen navbar */}
@@ -69,7 +69,7 @@ const Navbar = () => {
 
         <div className="absolute w-full bottom-0  text-lg font-semibold px-4 flex flex-col justify-center gap-2 pb-5">
           <div>Profile</div>
-          <div className="flex gap-2 cursor-pointer items-center text-rose-600">
+          <div className="flex gap-2 cursor-pointer items-center text-rose-600" onClick={()=>logoutFunction()}>
             <LogOut className="size-5" /> Logout
           </div>
         </div>

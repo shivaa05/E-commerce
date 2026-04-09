@@ -63,7 +63,7 @@ export const getAllProducts = async (req, res) => {
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
-    const limit = 10;
+    const limit = 12;
     const page = parseInt(req.query.page) || 1;
     const products = await Product.find().limit(limit).skip((page - 1) * limit);
     res.status(200).json({ products });

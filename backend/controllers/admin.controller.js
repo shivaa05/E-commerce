@@ -11,7 +11,7 @@ export const getAllUsers = async (req, res) => {
     }
 
     const page = parseInt(req.query.page) || 1;
-    const limit = 20;
+    const limit = 12;
 
     const users = await User.find()
       .skip((page - 1) * limit)

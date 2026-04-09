@@ -2,15 +2,19 @@ import React, { useState } from "react";
 import { Handbag, Heart, LogOut, Menu, Search, X } from "lucide-react";
 import { useAuthStore } from "../../store/AuthStore";
 const Navbar = () => {
-  const { user,logoutFunction } = useAuthStore();
+  const { user, logoutFunction } = useAuthStore();
   const [sidePanelSmall, setSidePanelSmall] = useState(false);
+  const [popUpLarge, setPopUpLarge] = useState(false);
   return (
     <nav className="py-2 fixed top-0 left-0 w-full z-10 flex flex-col gap-4 md:flex md:justify-between md:items-center md:flex-row md:px-[4vw] md:py-4 bg-white">
       {/* small screen navbar */}
       <div className="px-4 flex justify-between items-center border-b border-zinc-300/50 pb-2 shadow-sm md:hidden">
         {/* left */}
         <div className="flex items-center gap-4">
-          <Menu className="size-6 cursor-pointer" onClick={()=>setSidePanelSmall(true)}/>
+          <Menu
+            className="size-6 cursor-pointer"
+            onClick={() => setSidePanelSmall(true)}
+          />
           <img src="./logo.svg" alt="Logo" className="size-8" />
         </div>
 
@@ -37,43 +41,51 @@ const Navbar = () => {
       </div>
 
       {/* Side panel for small screen */}
-      {sidePanelSmall && <div className="md:hidden absolute h-[100vh] top-0 left-0 border w-2/3 bg-zinc-500/30 backdrop-blur-xs flex flex-col py-2">
-        <div className="flex justify-between items-center p-2 border-b">
-          <div className="text-2xl font-bold">Myntra</div>
-          <X className="size-7 cursor-pointer" onClick={()=>setSidePanelSmall(false)}/>
-        </div>
+      {sidePanelSmall && (
+        <div className="md:hidden absolute h-[100vh] top-0 left-0 border w-2/3 bg-zinc-500/30 backdrop-blur-xs flex flex-col py-2">
+          <div className="flex justify-between items-center p-2 border-b">
+            <div className="text-2xl font-bold">Myntra</div>
+            <X
+              className="size-7 cursor-pointer"
+              onClick={() => setSidePanelSmall(false)}
+            />
+          </div>
 
-        <div className="px-2 flex flex-col gap-4 mt-5">
-          <div className="text-lg px-2 cursor-pointer font-semibold border-b border-zinc-600">
-            Home
+          <div className="px-2 flex flex-col gap-4 mt-5">
+            <div className="text-lg px-2 cursor-pointer font-semibold border-b border-zinc-600">
+              Home
+            </div>
+            <div className="text-lg px-2 cursor-pointer font-semibold border-b border-zinc-600">
+              Men
+            </div>
+            <div className="text-lg px-2 cursor-pointer font-semibold border-b border-zinc-600">
+              Women
+            </div>
+            <div className="text-lg px-2 cursor-pointer font-semibold border-b border-zinc-600">
+              Kids
+            </div>
+            <div className="text-lg px-2 cursor-pointer font-semibold border-b border-zinc-600">
+              Beauty
+            </div>
+            <div className="text-lg px-2 cursor-pointer font-semibold border-b border-zinc-600">
+              Home & Kitchen
+            </div>
+            <div className="text-lg px-2 cursor-pointer font-semibold border-b border-zinc-600">
+              Electronics
+            </div>
           </div>
-          <div className="text-lg px-2 cursor-pointer font-semibold border-b border-zinc-600">
-            Men
-          </div>
-          <div className="text-lg px-2 cursor-pointer font-semibold border-b border-zinc-600">
-            Women
-          </div>
-          <div className="text-lg px-2 cursor-pointer font-semibold border-b border-zinc-600">
-            Kids
-          </div>
-          <div className="text-lg px-2 cursor-pointer font-semibold border-b border-zinc-600">
-            Beauty
-          </div>
-          <div className="text-lg px-2 cursor-pointer font-semibold border-b border-zinc-600">
-            Home & Kitchen
-          </div>
-          <div className="text-lg px-2 cursor-pointer font-semibold border-b border-zinc-600">
-            Electronics
-          </div>
-        </div>
 
-        <div className="absolute w-full bottom-0  text-lg font-semibold px-4 flex flex-col justify-center gap-2 pb-5">
-          <div>Profile</div>
-          <div className="flex gap-2 cursor-pointer items-center text-rose-600" onClick={()=>logoutFunction()}>
-            <LogOut className="size-5" /> Logout
+          <div className="absolute w-full bottom-0  text-lg font-semibold px-4 flex flex-col justify-center gap-2 pb-5">
+            <div>Profile</div>
+            <div
+              className="flex gap-2 cursor-pointer items-center text-rose-600"
+              onClick={() => logoutFunction()}
+            >
+              <LogOut className="size-5" /> Logout
+            </div>
           </div>
         </div>
-      </div>}
+      )}
 
       {/* Large screen navbar */}
 
@@ -113,7 +125,7 @@ const Navbar = () => {
       </div>
 
       {/* right */}
-      <div className="hidden md:flex items-center gap-7">
+      <div className="relative hidden md:flex items-center gap-7">
         <div className="flex flex-col justify-center items-center text-xs font-semibold">
           <Heart className="size-5 cursor-pointer text-gray-700" />
           <div>Wishlist</div>
@@ -125,9 +137,22 @@ const Navbar = () => {
             1
           </div>
         </div>
-        <div className="h-10 w-10 border rounded-full flex justify-center items-center text-lg font-medium bg-green-800/80 text-white">
-          S
+        <div className="h-10 w-10 border rounded-full flex cursor-pointer justify-center items-center text-lg font-medium bg-green-800/80 text-white" onClick={()=>setPopUpLarge(!popUpLarge)}>
+          {user.name[0].toUpperCase()}
         </div>
+
+        {/* Pop up for large screen */}
+        {popUpLarge && (
+          <div className="hidden absolute top-12 right-0 bg-rose-100/70 backdrop-blur-xs px-3 py-2 rounded-lg md:flex flex-col gap-1 shadow-lg">
+            <div>Profile</div>
+            <div
+              className="flex gap-2 cursor-pointer items-center text-rose-600"
+              onClick={() => logoutFunction()}
+            >
+              <LogOut className="size-5" /> Logout
+            </div>
+          </div>
+        )}
       </div>
     </nav>
   );

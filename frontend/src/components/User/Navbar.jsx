@@ -20,7 +20,7 @@ const Navbar = () => {
           <div className="relative">
             <Handbag className="size-6  cursor-pointer text-gray-700" />
             <div className="absolute h-4 w-4 bg-[#ff3e6c] rounded-full -top-1 -right-1.5 flex justify-center items-center text-[10px] font-bold text-white">
-              1
+              0
             </div>
           </div>
         </div>

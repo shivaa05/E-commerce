@@ -103,10 +103,10 @@ Before you begin, ensure you have the following installed:
 
 ```bash
 # Using HTTPS
-git clone https://github.com/yourusername/ecommerce-backend.git
+git clone https://github.com/shivaa05/E-commerce.git
 
 # Using SSH
-git clone git@github.com:yourusername/ecommerce-backend.git
+git clone git@github.com:shivaa05/E-commerce.git
 
 # Navigate to the project directory
 cd ecommerce-backend/backend

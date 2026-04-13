@@ -44,7 +44,7 @@ const Navbar = () => {
 
       {/* Side panel for small screen */}
       {sidePanelSmall && (
-        <div className="md:hidden absolute h-[100vh] top-0 left-0 border w-2/3 bg-zinc-500/30 backdrop-blur-xs flex flex-col py-2">
+        <div className="md:hidden absolute h-[101vh] top-0 left-0 border w-2/3 bg-zinc-500/30 backdrop-blur-xs flex flex-col py-2">
           <div className="flex justify-between items-center p-2 border-b">
             <div className="text-2xl font-bold">Myntra</div>
             <X

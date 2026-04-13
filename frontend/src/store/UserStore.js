@@ -31,7 +31,7 @@ export const useUserStore = create((set, get) => ({
       toast.error("Failed to add product to cart");
     }
   },
-  removeFromCart: async (productId) => {
+  removeOneFromCart: async (productId) => {
     try {
       const res = await axios.get(
         `${BACKEND_URL}/api/product/remove-from-cart/${productId}`,
@@ -44,4 +44,33 @@ export const useUserStore = create((set, get) => ({
       toast.error("Failed to remove product from cart");
     }
   },
+
+  removeAllFromCart: async (productId) => {
+    try {
+      const res = await axios.get(
+        `${BACKEND_URL}/api/product/remove-item-from-cart/${productId}`,
+        { withCredentials: true },
+      );
+      get().getCartItems(); // Refresh cart items after removing item from cart
+      toast.success(res.data.message);
+    } catch (error) {
+      console.log("error in removeAllFromCart function", error);
+      toast.error("Failed to remove product from cart");
+    }
+  },
+
+  clearCart: async () => { 
+    try {
+      const res = await axios.get(
+        `${BACKEND_URL}/api/product/clear-cart`,
+        { withCredentials: true },
+      );
+      get().getCartItems();
+      toast.success(res.data.message);
+    }
+    catch (error) {
+      console.log("error in clearCart function", error);
+      toast.error("Failed to clear cart");
+    }
+  }
 }));

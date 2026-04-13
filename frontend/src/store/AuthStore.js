@@ -4,6 +4,7 @@ const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 import toast from "react-hot-toast";
 export const useAuthStore = create((set, get) => ({
   user: null,
+  cart:[],
 
   loginFunction: async ({ email, password }) => {
     try {

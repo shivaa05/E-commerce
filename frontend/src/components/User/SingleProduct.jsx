@@ -1,10 +1,19 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FaHeart, FaRegHeart, FaStar } from "react-icons/fa6";
 import { Handbag, ShoppingCart } from "lucide-react"
+import { useUserStore } from "../../store/UserStore";
+import { useNavigate } from "react-router-dom";
+
 const SingleProduct = ({ product }) => {
   const [wishlist, setWishlist] = useState(false);
   const images = product.images;
   const [currImage, setCurrImage] = useState(0);
+  const { cart, addToCart } = useUserStore();
+
+  const isPresentInCart = () => {
+    return cart.some((item) => item.product._id === product._id);
+  };
+  const navigate = useNavigate();
   return (
     <div className="pb-2 border-r border-zinc-300 relative">
       {wishlist ? (
@@ -62,11 +71,23 @@ const SingleProduct = ({ product }) => {
             <span>| 5</span>
           </div>
           <div className="flex gap-1 items-center mt-1 px-4 cursor-pointer border rounded-lg text-lg lg:text-sm  justify-center py-1.5 bg-[#FF3E6C] text-[#FFDCC3] font-semibold">
-            <div className="flex gap-2 items-center">
-              <Handbag className="size-3.5" />
-              <div>Add to Bag</div>
-            </div>
-            {/* <div>Go to Bag</div> */}
+            {isPresentInCart() ? (
+              <div
+                className="flex gap-2 items-center"
+                onClick={() => navigate("/cart")}
+              >
+                <Handbag className="size-3.5" />
+                <div>Go to Bag</div>
+              </div>
+            ) : (
+              <div
+                className="flex gap-2 items-center"
+                onClick={() => addToCart(product._id)}
+              >
+                <Handbag className="size-3.5" />
+                <div>Add to Bag</div>
+              </div>
+            )}
           </div>
         </div>
       </div>

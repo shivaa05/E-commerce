@@ -1,10 +1,12 @@
 import React, { useState } from "react";
 import { Handbag, Heart, LogOut, Menu, Search, X } from "lucide-react";
 import { useAuthStore } from "../../store/AuthStore";
+import { useUserStore } from "../../store/UserStore";
 const Navbar = () => {
   const { user, logoutFunction } = useAuthStore();
   const [sidePanelSmall, setSidePanelSmall] = useState(false);
   const [popUpLarge, setPopUpLarge] = useState(false);
+  const { cart } = useUserStore();
   return (
     <nav className="py-2 fixed top-0 left-0 w-full z-10 flex flex-col gap-4 md:flex md:justify-between md:items-center md:flex-row md:px-[4vw] md:py-4 bg-white">
       {/* small screen navbar */}
@@ -24,7 +26,7 @@ const Navbar = () => {
           <div className="relative">
             <Handbag className="size-6  cursor-pointer text-gray-700" />
             <div className="absolute h-4 w-4 bg-[#ff3e6c] rounded-full -top-1 -right-1.5 flex justify-center items-center text-[10px] font-bold text-white">
-              0
+              {cart.length}
             </div>
           </div>
         </div>
@@ -134,7 +136,7 @@ const Navbar = () => {
           <Handbag className="size-5 cursor-pointer text-gray-700" />
           <div>Cart</div>
           <div className="absolute h-4 w-4 bg-[#ff3e6c] rounded-full -top-1 -right-1.5 flex justify-center items-center text-[10px] font-bold text-white">
-            1
+            {cart.length}
           </div>
         </div>
         <div className="h-10 w-10 border rounded-full flex cursor-pointer justify-center items-center text-lg font-medium bg-green-800/80 text-white" onClick={()=>setPopUpLarge(!popUpLarge)}>

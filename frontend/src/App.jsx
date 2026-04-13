@@ -7,15 +7,19 @@ import { Toaster } from 'react-hot-toast'
 import Protected from './components/Protected'
 import { useAuthStore } from './store/AuthStore'
 import { useProductStore } from './store/ProductStore'
+import { useUserStore } from './store/UserStore'
+import Cart from './pages/User/Cart'
 const App = () => {
   const { user, fetchLoggedInUser } = useAuthStore();
-  const {fetchAllProducts} = useProductStore();
+  const { fetchAllProducts } = useProductStore();
+  const { getCartItems } = useUserStore();  
   useEffect(() => {
     fetchLoggedInUser();
   },[])
 
   useEffect(() => {
     fetchAllProducts();
+    getCartItems();
   }, [user]);
   return (
     <div className="w-full">
@@ -35,6 +39,7 @@ const App = () => {
         {/* Protected Routes */}
         <Route path="/" element={<Protected />}>
           <Route index element={<Home />} />
+          <Route path="/cart" element={<Cart />} />
         </Route>
       </Routes>
     </div>

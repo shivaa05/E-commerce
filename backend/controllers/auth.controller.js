@@ -39,6 +39,7 @@ export const register = async (req, res) => {
         name: user.name,
         email: user.email,
         role: user.role,
+        cartItems: user.cartItems,
       },
     });
   } catch (error) {
@@ -77,6 +78,7 @@ export const login = async (req, res) => {
         name: user.name,
         email: user.email,
         role: user.role,
+        cartItems: user.cartItems,
       },
     });
   } catch (error) {

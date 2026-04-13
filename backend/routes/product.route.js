@@ -1,5 +1,5 @@
 import express from "express";
-import { addToCart, createProduct, deleteProduct, getAllProducts, getCartItems, getProductById, removeFromCart, updateProduct } from "../controllers/product.controller.js";
+import { addToCart, clearCart, createProduct, deleteProduct, getAllProducts, getCartItems, getProductById, removeFromCart, removeItemFromCart, updateProduct } from "../controllers/product.controller.js";
 import { isAuth } from "../middleware/isAuth.js";
 
 const router = express.Router();
@@ -12,5 +12,7 @@ router.put("/update/:id", isAuth, updateProduct);
 router.get("/add-to-cart/:id", isAuth, addToCart);
 router.get("/get-cart-items", isAuth, getCartItems);
 router.get("/remove-from-cart/:id", isAuth, removeFromCart);
+router.get("/remove-item-from-cart/:id", isAuth, removeItemFromCart);
+router.get("/clear-cart", isAuth, clearCart);
 
 export default router;

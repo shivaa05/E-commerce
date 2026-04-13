@@ -214,6 +214,49 @@ export const removeFromCart = async (req, res) => {
   }
 }
 
+export const removeItemFromCart = async (req, res) => {
+  try {
+    const userId = req.userId;
+    const productId = req.params.id;
+    const user = await User.findById(userId);
+    if (!user || user.role !== "User") {
+      return res.status(404).json({ message: "User not found or unauthorized" });
+    }
+    const product = await Product.findById(productId);
+    if (!product) {
+      return res.status(404).json({ message: "Product not found" });
+    } 
+    const cartItemIndex = user.cartItems.findIndex(item => item.product.toString() === productId);
+    if (cartItemIndex > -1) {
+      user.cartItems.splice(cartItemIndex, 1);
+      await user.save();
+      return res.status(200).json({ message: "Product removed from cart successfully", cartItems: user.cartItems });
+    } else {
+      return res.status(404).json({ message: "Product not found in cart" });  
+    }
+  } catch (error) {
+    console.log("error in removeItemFromCart", error);
+    res.status(500).json({ message: error.message });
+  } 
+}
+
+export const clearCart = async (req, res) => {
+  try {
+    const userId = req.userId;
+    const user = await User.findById(userId);
+    if (!user || user.role !== "User") {
+      return res.status(404).json({ message: "User not found or unauthorized" });
+    }
+    user.cartItems = [];
+    await user.save();
+    return res.status(200).json({ message: "Cart cleared successfully", cartItems: user.cartItems });
+  }
+  catch (error) {
+    console.log("error in clearCart", error);
+    res.status(500).json({ message: error.message });
+  }
+}
+
 export const getCartItems = async (req, res) => {
   try {
     const userId = req.userId;

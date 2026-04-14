@@ -2,8 +2,7 @@ import React from "react";
 import { CreditCard } from "lucide-react";
 import { useUserStore } from "../../store/UserStore";
 const Checkout = () => {
-  const { cart, removeOneFromCart, clearCart, removeAllFromCart, addToCart } =
-    useUserStore();
+  const { cart } = useUserStore();
   const totalPrice = () => {
     return cart.reduce(
       (total, item) => total + item.quantity * item.product.price,
@@ -35,11 +34,11 @@ const Checkout = () => {
           </div>
           <div className="flex justify-between items-center text-[#2c2d34]">
             <span>PRODUCT DISCOUNT:</span>
-            <span className="text-teal-600 font-bold">- ₹1200</span>
+            <span className="text-teal-600 font-bold">- ₹0</span>
           </div>
           <div className="flex justify-between items-center text-[#2c2d34]">
             <span>COUPON DISCOUNT:</span>
-            <span className="text-teal-600 font-bold">- ₹1200</span>
+            <span className="text-teal-600 font-bold">- ₹0</span>
           </div>
           <div className="flex justify-between items-center font-bold text-[#2c2d34]">
             <span>FINAL PRICE:</span>

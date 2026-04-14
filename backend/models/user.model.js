@@ -58,7 +58,15 @@ const userSchema = new mongoose.Schema({
       type: mongoose.Schema.Types.ObjectId,
       ref: "Product",
     },
-  ]
+  ],
+  coupons: [{
+    couponCode:String,
+    discount: Number,
+    isApplied: {
+      type: Boolean,
+      default: false,
+    },
+  }]
 });
 
 const User = mongoose.model("User", userSchema);

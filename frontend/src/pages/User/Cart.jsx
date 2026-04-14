@@ -2,6 +2,7 @@ import React from "react";
 import { useUserStore } from "../../store/UserStore";
 import { ArrowLeft, Trash2 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import Checkout from "../../components/User/Checkout";
 const Cart = () => {
   const { cart, removeOneFromCart, clearCart, removeAllFromCart, addToCart } =
     useUserStore();
@@ -16,7 +17,7 @@ const Cart = () => {
   };
   const navigate = useNavigate();
   return (
-    <div className="w-full h-full">
+    <div className="w-full h-full mb-10">
       <div className="h-16 border-b flex items-center gap-2 px-4 text-lg font-semibold uppercase text-[#393b53]">
         <ArrowLeft className="cursor-pointer" onClick={() => navigate("/")} />
         Shopping Bag
@@ -119,7 +120,9 @@ const Cart = () => {
                 </div>
               </div>
             ))}
-          </div>
+            </div>
+            
+            <Checkout/>
         </div>
       )}
     </div>

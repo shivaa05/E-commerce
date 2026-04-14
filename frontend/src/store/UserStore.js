@@ -5,6 +5,7 @@ const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
 export const useUserStore = create((set, get) => ({
   cart: [],
+  coupons: [],
   getCartItems: async () => {
     try {
       const res = await axios.get(`${BACKEND_URL}/api/product/get-cart-items`, {
@@ -72,5 +73,18 @@ export const useUserStore = create((set, get) => ({
       console.log("error in clearCart function", error);
       toast.error("Failed to clear cart");
     }
+  },
+
+  fetchCoupons: async () => {
+    try {
+      const res = await axios.get(`${BACKEND_URL}/api/auth/all-coupons`, {
+        withCredentials: true,
+      });
+      set({ coupons: res.data.coupons });
+    } catch (error) {
+      console.log("error in fetchCoupons function", error);
+      toast.error("Failed to fetch coupons");
+      set({coupons: []});
+    };
   }
 }));

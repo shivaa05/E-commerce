@@ -17,7 +17,7 @@ const Cart = () => {
   };
   const navigate = useNavigate();
   return (
-    <div className="w-full h-full mb-10">
+    <div className="mb-10 w-full">
       <div className="h-16 border-b flex items-center gap-2 px-4 text-lg font-semibold uppercase text-[#393b53]">
         <ArrowLeft className="cursor-pointer" onClick={() => navigate("/")} />
         Shopping Bag

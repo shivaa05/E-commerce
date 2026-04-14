@@ -1,5 +1,5 @@
 import React from "react";
-import { CreditCard } from "lucide-react";
+import { ChevronRight, CreditCard } from "lucide-react";
 import { useUserStore } from "../../store/UserStore";
 const Checkout = () => {
   const { cart } = useUserStore();
@@ -13,10 +13,34 @@ const Checkout = () => {
     return cart.reduce((total, item) => total + item.quantity, 0);
   };
   return (
-    <div className="w-full">
-      <div className="text-xl font-semibold px-4 py-3 bg-zinc-200 flex items-center gap-2 text-rose-600">
+    <div className="">
+      <div className="tracking-wider text-xl font-semibold px-4 py-3 bg-zinc-200 flex items-center gap-2 text-rose-600">
         <CreditCard className="size-7" />
-        Checkout
+        CHECKOUT
+      </div>
+
+      {/* Coupon */}
+
+      <div className="p-4">
+        <div className="text-xl font-semibold tracking-wider flex justify-between items-center text-[#2d2e35] mb-2">
+          <span>APPLY COUPONS</span>
+          <span className="text-rose-600/90 cursor-pointer flex gap-1 items-center">All coupons
+          
+          <ChevronRight/></span>
+        </div>
+        <div className="flex gap-2">
+          <input
+            type="text"
+            placeholder="Enter coupon code"
+            className="w-full mt-2 p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-rose-600"
+          />
+          <button className="mt-2 px-4 py-2 bg-rose-600/90 font-semibold tracking-wider text-white rounded-lg hover:bg-rose-500 cursor-pointer">
+            APPLY
+          </button>
+        </div>
+
+        {/* All coupons */}
+        <div></div>
       </div>
 
       <div className="p-4">
@@ -47,8 +71,11 @@ const Checkout = () => {
         </div>
       </div>
 
-      <button className="mx-4 text-center font-semibold w-full py-2 rounded-xl text-lg cursor-pointer bg-rose-600/90 hover:bg-rose-500/70 text-white">PLACE ORDER</button>
-
+      <div className="p-4">
+        <button className="w-full py-2 rounded-xl text-lg cursor-pointer bg-rose-600/90 hover:bg-rose-500/70 text-white font-semibold tracking-wider">
+          PLACE ORDER
+        </button>
+      </div>
     </div>
   );
 };

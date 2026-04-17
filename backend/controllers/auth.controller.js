@@ -290,7 +290,7 @@ export const applyCoupon = async (req, res) => {
     if (!coupon) {
       return res.status(404).json({ message: "Coupon not found" });
     }
-    return res.status(200).json({ message: "Coupon applied successfully" });
+    return res.status(200).json({ discount: coupon.discount, message: `Coupon ${couponCode} applied successfully` });
   } catch (error) {
     console.log("Error in applyCoupon", error);
     res.status(500).json({ message: error.message });

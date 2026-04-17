@@ -1,6 +1,7 @@
 import generateToken from "../config/generateToken.js";
 import bcrypt from "bcrypt";
 import User from "../models/user.model.js";
+import Product from "../models/product.model.js";
 import { uploadOnCloudinary } from "../utils/cloudinary.js";
 import { sendEmail } from "../utils/sendMail.js";
 import { use } from "react";
@@ -305,6 +306,10 @@ export const addToWishlist = async (req, res) => {
     if(!productId) {
       return res.status(400).json({ message: "Product ID is required" });
     }
+    const product = await Product.findById(productId);
+    if(!product) {
+      return res.status(404).json({ message: "Product not found" });
+    }
     const user = await User.findById(userId);
     if(!user || user.role !== "User") {
       return res.status(404).json({ message: "User not found" });
@@ -360,6 +365,22 @@ export const getWishlist = async (req, res) => {
     return res.status(200).json({ wishList: user.wishList });
   } catch (error) {
     console.log("Error in getWishlist", error);
+    res.status(500).json({ message: error.message });
+  }
+}
+
+export const clearWishlist = async (req, res) => { 
+  try {
+    const userId = req.userId;
+    const user = await User.findById(userId);
+    if (!user || user.role !== "User") {
+      return res.status(404).json({ message: "User not found" });
+    }
+    user.wishList = [];
+    await user.save();
+    return res.status(200).json({ message: "Wishlist cleared successfully" });
+  } catch (error) {
+    console.log("Error in clearWishlist", error);
     res.status(500).json({ message: error.message });
   }
 }

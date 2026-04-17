@@ -296,3 +296,70 @@ export const applyCoupon = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 }
+
+export const addToWishlist = async (req, res) => { 
+  try {
+    const userId = req.userId;
+    const { productId } = req.body;
+
+    if(!productId) {
+      return res.status(400).json({ message: "Product ID is required" });
+    }
+    const user = await User.findById(userId);
+    if(!user || user.role !== "User") {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    if(user.wishList.includes(productId)) {
+      return res.status(400).json({ message: "Product already in wishlist" });
+    }
+
+    user.wishList.push(productId);
+    await user.save();
+    return res.status(200).json({ message: "Product added to wishlist successfully" });
+  } catch (error) {
+    console.log("Error in addToWishlist", error);
+    res.status(500).json({ message: error.message });
+  }
+}
+
+export const removeFromWishlist = async (req, res) => { 
+  try {
+    const userId = req.userId;
+    const { productId } = req.body;
+
+    if(!productId) {
+      return res.status(400).json({ message: "Product ID is required" });
+    }
+
+    const user = await User.findById(userId);
+    if(!user || user.role !== "User") {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    if(!user.wishList.includes(productId)) {
+      return res.status(400).json({ message: "Product not in wishlist" });
+    }
+
+    user.wishList = user.wishList.filter((id) => id.toString() !== productId);
+    await user.save();
+    return res.status(200).json({ message: "Product removed from wishlist successfully" });
+  } catch (error) {
+    console.log("Error in removeFromWishlist", error);
+    res.status(500).json({ message: error.message });
+  }
+}
+
+export const getWishlist = async (req, res) => { 
+  try {
+    const userId = req.userId;
+    const user = await User.findById(userId).populate("wishList");
+    if (!user || user.role !== "User") {
+      return res.status(404).json({ message: "User not found" });
+    }
+    return res.status(200).json({ wishList: user.wishList });
+  } catch (error) {
+    console.log("Error in getWishlist", error);
+    res.status(500).json({ message: error.message });
+  }
+}

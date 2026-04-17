@@ -9,6 +9,7 @@ import { useAuthStore } from './store/AuthStore'
 import { useProductStore } from './store/ProductStore'
 import { useUserStore } from './store/UserStore'
 import Cart from './pages/User/Cart'
+import Wishlist from './pages/User/Wishlist'
 const App = () => {
   const { user, fetchLoggedInUser } = useAuthStore();
   const { fetchAllProducts } = useProductStore();
@@ -40,6 +41,7 @@ const App = () => {
         <Route path="/" element={<Protected />}>
           <Route index element={<Home />} />
           <Route path="/cart" element={<Cart />} />
+          <Route path="/wishlist" element={<Wishlist />} />
         </Route>
       </Routes>
     </div>

@@ -1,8 +1,10 @@
-import React from "react";
-import { ChevronRight, CreditCard } from "lucide-react";
-import { useUserStore } from "../../store/UserStore";
+import React, { useEffect, useState } from "react";
+import { CreditCard } from "lucide-react";
+import { useUserStore } from "../../store/UserStore"
+import Coupons from "./Coupons";
 const Checkout = () => {
-  const { cart } = useUserStore();
+  const { cart, fetchCoupons, appliedCouponDiscount } = useUserStore();
+
   const totalPrice = () => {
     return cart.reduce(
       (total, item) => total + item.quantity * item.product.price,
@@ -12,6 +14,13 @@ const Checkout = () => {
   const totalQuantity = () => {
     return cart.reduce((total, item) => total + item.quantity, 0);
   };
+
+  const couponDiscount = appliedCouponDiscount ? appliedCouponDiscount/100 : 0;
+
+  useEffect(() => {
+    fetchCoupons();
+  }, []);
+
   return (
     <div className="">
       <div className="tracking-wider text-xl font-semibold px-4 py-3 bg-zinc-200 flex items-center gap-2 text-rose-600">
@@ -20,28 +29,7 @@ const Checkout = () => {
       </div>
 
       {/* Coupon */}
-
-      <div className="p-4">
-        <div className="text-xl font-semibold tracking-wider flex justify-between items-center text-[#2d2e35] mb-2">
-          <span>APPLY COUPONS</span>
-          <span className="text-rose-600/90 cursor-pointer flex gap-1 items-center">All coupons
-          
-          <ChevronRight/></span>
-        </div>
-        <div className="flex gap-2">
-          <input
-            type="text"
-            placeholder="Enter coupon code"
-            className="w-full mt-2 p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-rose-600"
-          />
-          <button className="mt-2 px-4 py-2 bg-rose-600/90 font-semibold tracking-wider text-white rounded-lg hover:bg-rose-500 cursor-pointer">
-            APPLY
-          </button>
-        </div>
-
-        {/* All coupons */}
-        <div></div>
-      </div>
+      <Coupons />
 
       <div className="p-4">
         <div className="text-lg font-semibold flex gap-2 items-center text-[#2d2e35]">
@@ -62,11 +50,11 @@ const Checkout = () => {
           </div>
           <div className="flex justify-between items-center text-[#2c2d34]">
             <span>COUPON DISCOUNT:</span>
-            <span className="text-teal-600 font-bold">- ₹0</span>
+            <span className="text-teal-600 font-bold">- ₹{((totalPrice() * couponDiscount)).toFixed(2)}</span>
           </div>
           <div className="flex justify-between items-center font-bold text-[#2c2d34]">
             <span>FINAL PRICE:</span>
-            <span className="text-red-600">₹{totalPrice().toFixed(2)}</span>
+            <span className="text-red-600">₹{((totalPrice() - totalPrice() * couponDiscount)).toFixed(2)}</span>
           </div>
         </div>
       </div>

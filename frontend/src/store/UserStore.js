@@ -6,6 +6,8 @@ const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 export const useUserStore = create((set, get) => ({
   cart: [],
   coupons: [],
+  appliedCouponDiscount: null,
+  appliedCoupon: null,
   getCartItems: async () => {
     try {
       const res = await axios.get(`${BACKEND_URL}/api/product/get-cart-items`, {
@@ -60,16 +62,14 @@ export const useUserStore = create((set, get) => ({
     }
   },
 
-  clearCart: async () => { 
+  clearCart: async () => {
     try {
-      const res = await axios.get(
-        `${BACKEND_URL}/api/product/clear-cart`,
-        { withCredentials: true },
-      );
+      const res = await axios.get(`${BACKEND_URL}/api/product/clear-cart`, {
+        withCredentials: true,
+      });
       get().getCartItems();
       toast.success(res.data.message);
-    }
-    catch (error) {
+    } catch (error) {
       console.log("error in clearCart function", error);
       toast.error("Failed to clear cart");
     }
@@ -84,7 +84,25 @@ export const useUserStore = create((set, get) => ({
     } catch (error) {
       console.log("error in fetchCoupons function", error);
       toast.error("Failed to fetch coupons");
-      set({coupons: []});
-    };
-  }
+      set({ coupons: [] });
+    }
+  },
+
+  applyCoupon: async (couponCode) => {
+    try {
+      console.log("coupond Code",couponCode)
+      const res = await axios.post(
+        `${BACKEND_URL}/api/auth/apply-coupon`,
+        { couponCode },
+        {
+          withCredentials: true,
+        },
+      );
+      set({ appliedCouponDiscount: res.data.discount, appliedCoupon: couponCode });
+      toast.success(res.data.message);
+    } catch (error) {
+      console.log("error in applyCoupon function", error);
+      toast.error(error.response?.data?.message || "Failed to apply coupon");
+    }
+  },
 }));

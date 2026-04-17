@@ -130,7 +130,7 @@ const Navbar = () => {
 
       {/* right */}
       <div className="relative hidden md:flex items-center gap-7">
-        <div className="flex flex-col justify-center items-center text-xs font-semibold">
+        <div className="flex flex-col justify-center items-center text-xs font-semibold" onClick={()=>navigate("/wishlist")}>
           <Heart className="size-5 cursor-pointer text-gray-700" />
           <div>Wishlist</div>
         </div>

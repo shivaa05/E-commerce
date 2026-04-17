@@ -1,5 +1,5 @@
 import express from "express";
-import { allCoupons, applyCoupon, changePassword, getUserProfile, login, logout, register, resetPassword, sendOtp, updateUserProfile, verifyOtp } from "../controllers/auth.controller.js";
+import { addToWishlist, allCoupons, applyCoupon, changePassword, getUserProfile, getWishlist, login, logout, register, removeFromWishlist, resetPassword, sendOtp, updateUserProfile, verifyOtp } from "../controllers/auth.controller.js";
 import { isAuth } from "../middleware/isAuth.js";
 
 const router = express.Router();
@@ -15,4 +15,8 @@ router.post("/verify-otp", verifyOtp);
 router.post("/reset-password", resetPassword);
 router.get("/all-coupons", isAuth, allCoupons);
 router.post("/apply-coupon", isAuth, applyCoupon);
+router.post("/add-to-wishlist", isAuth, addToWishlist);
+router.post("/remove-from-wishlist", isAuth, removeFromWishlist);
+router.get("/wishlist", isAuth, getWishlist);
+
 export default router;

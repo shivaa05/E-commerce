@@ -38,7 +38,7 @@ const Cart = () => {
           </button>
         </div>
       ) : (
-          <div className="w-full md:max-w-2/3 flex flex-col mx-auto mt-6">
+        <div className="w-full md:max-w-2/3 flex flex-col mx-auto mt-6">
           {/* Address */}
           <div className="flex justify-between items-center p-4 font-semibold text-[#5a5b62]">
             <div className="w-2/3">
@@ -67,7 +67,7 @@ const Cart = () => {
           <div>
             {cart.map((item) => (
               <div
-                key={item.product.id}
+                key={item.product._id}
                 className="flex gap-4 p-4 border-b h-52"
               >
                 <img
@@ -120,9 +120,9 @@ const Cart = () => {
                 </div>
               </div>
             ))}
-            </div>
-            
-            <Checkout/>
+          </div>
+
+          <Checkout />
         </div>
       )}
     </div>

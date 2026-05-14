@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { CreditCard } from "lucide-react";
-import { useUserStore } from "../../store/UserStore"
+import { useUserStore } from "../../store/UserStore";
 import Coupons from "./Coupons";
+import PaymentForm from "./PaymentForm"; // Import PaymentForm
+
 const Checkout = () => {
   const { cart, fetchCoupons, appliedCouponDiscount } = useUserStore();
 
@@ -15,7 +17,10 @@ const Checkout = () => {
     return cart.reduce((total, item) => total + item.quantity, 0);
   };
 
-  const couponDiscount = appliedCouponDiscount ? appliedCouponDiscount/100 : 0;
+  const couponDiscount = appliedCouponDiscount
+    ? appliedCouponDiscount / 100
+    : 0;
+  const finalPrice = totalPrice() - totalPrice() * couponDiscount;
 
   useEffect(() => {
     fetchCoupons();
@@ -50,20 +55,18 @@ const Checkout = () => {
           </div>
           <div className="flex justify-between items-center text-[#2c2d34]">
             <span>COUPON DISCOUNT:</span>
-            <span className="text-teal-600 font-bold">- ₹{((totalPrice() * couponDiscount)).toFixed(2)}</span>
+            <span className="text-teal-600 font-bold">
+              - ₹{(totalPrice() * couponDiscount).toFixed(2)}
+            </span>
           </div>
           <div className="flex justify-between items-center font-bold text-[#2c2d34]">
             <span>FINAL PRICE:</span>
-            <span className="text-red-600">₹{((totalPrice() - totalPrice() * couponDiscount)).toFixed(2)}</span>
+            <span className="text-red-600">₹{finalPrice.toFixed(2)}</span>
           </div>
         </div>
       </div>
 
-      <div className="p-4">
-        <button className="w-full py-2 rounded-xl text-lg cursor-pointer bg-rose-600/90 hover:bg-rose-500/70 text-white font-semibold tracking-wider">
-          PLACE ORDER
-        </button>
-      </div>
+      <PaymentForm amount={finalPrice} />
     </div>
   );
 };

@@ -13,6 +13,14 @@ import { stripeWebhook } from "./controllers/payment.controller.js";
 const app = express();
 
 app.use(cors({ origin: process.env.FRONTEND_URL, credentials: true }));
+
+// Stripe webhook endpoint MUST be before express.json()
+app.post(
+  "/api/v1/payment/webhook",
+  express.raw({ type: "application/json" }),
+  stripeWebhook,
+);
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
@@ -24,10 +32,6 @@ app.use(
   }),
 );
 
-// Stripe webhook endpoint
-app.post("/api/v1/payment/webhook", express.raw({ type: "application/json" }),stripeWebhook);
-
-// routers
 app.use("/api/auth", authRouter);
 app.use("/api/product", productRouter);
 app.use("/api/admin", adminRouter);

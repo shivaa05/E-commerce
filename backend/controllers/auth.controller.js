@@ -116,19 +116,28 @@ export const updateUserProfile = async (req, res) => {
   try {
     const userId = req.userId;
     const { name, email, newPassword, currentPassword } = req.body;
-    const {profilePicture} = req.files || {};
+    const { profilePicture } = req.files || {};
 
-    const user = await User.findById(userId); 
+    const user = await User.findById(userId);
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
 
+    if (email && email !== user.email) {
+      const emailExists = await User.findOne({ email });
+      if (emailExists) {
+        return res.status(400).json({ message: "Email already in use" });
+      }
+      user.email = email;
+    }
+
     if (name) user.name = name;
-    if (email) user.email = email;  
     if (newPassword && currentPassword) {
       const isMatch = await bcrypt.compare(currentPassword, user.password);
       if (!isMatch) {
-        return res.status(400).json({ message: "Current password is incorrect" });
+        return res
+          .status(400)
+          .json({ message: "Current password is incorrect" });
       }
       const hashedPassword = await bcrypt.hash(newPassword, 10);
       user.password = hashedPassword;
@@ -146,11 +155,11 @@ export const updateUserProfile = async (req, res) => {
     }
     await user.save();
     return res.status(200).json({
-      user
-    })
+      user,
+    });
   } catch (error) {
     console.log("error in updateUserProfile", error);
-    res.status(500).json({ message: error.message }); 
+    res.status(500).json({ message: error.message });
   }
 };
 
@@ -164,12 +173,16 @@ export const changePassword = async (req, res) => {
       return res.status(404).json({ message: "User not found" });
     }
 
-    if(!currentPassword || !newPassword) {
+    if (!currentPassword || !newPassword) {
       return res.status(400).json({ message: "All fields are required" });
     }
 
-    if(currentPassword===newPassword) {
-      return res.status(400).json({ message: "New password must be different from current password" });
+    if (currentPassword === newPassword) {
+      return res
+        .status(400)
+        .json({
+          message: "New password must be different from current password",
+        });
     }
 
     const isMatch = await bcrypt.compare(currentPassword, user.password);
@@ -184,20 +197,20 @@ export const changePassword = async (req, res) => {
     console.log("Error in Changing password", error);
     res.status(500).json({ message: error.message });
   }
-}
+};
 
-export const sendOtp = async (req, res) => { 
+export const sendOtp = async (req, res) => {
   try {
     const { email } = req.body;
     if (!email) {
       return res.status(400).json({ message: "Email is required" });
     }
 
-      const user = await User.findOne({ email });
-      if (!user) {
-        return res.status(404).json({ message: "User not found" });
-    } 
-    
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
     const OTP = Math.floor(100000 + Math.random() * 900000).toString();
     user.otp = OTP;
     user.otpVerified = false;
@@ -207,10 +220,10 @@ export const sendOtp = async (req, res) => {
     sendEmail(email, OTP);
     return res.status(200).json({ message: "OTP sent to email" });
   } catch (error) {
-     console.log("Error in sendOtp", error);
+    console.log("Error in sendOtp", error);
     res.status(500).json({ message: error.message });
   }
-}
+};
 
 export const verifyOtp = async (req, res) => {
   try {
@@ -238,7 +251,7 @@ export const verifyOtp = async (req, res) => {
     console.log("Error in verifyOtp", error);
     res.status(500).json({ message: error.message });
   }
-}
+};
 
 export const resetPassword = async (req, res) => {
   try {
@@ -246,12 +259,12 @@ export const resetPassword = async (req, res) => {
     if (!email || !newPassword) {
       return res.status(400).json({ message: "All fields are required" });
     }
-    
+
     const user = await User.findOne({ email });
-    if(!user) {
+    if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
-    if(!user.otpVerified) {
+    if (!user.otpVerified) {
       return res.status(400).json({ message: "OTP not verified" });
     }
     const hashedPassword = await bcrypt.hash(newPassword, 10);
@@ -263,9 +276,9 @@ export const resetPassword = async (req, res) => {
     console.log("Error in resetPassword", error);
     res.status(500).json({ message: error.message });
   }
-}
+};
 
-export const allCoupons = async (req, res) => { 
+export const allCoupons = async (req, res) => {
   try {
     const userId = req.userId;
     const user = await User.findById(userId);
@@ -279,9 +292,9 @@ export const allCoupons = async (req, res) => {
     console.log("Error in allCoupons", error);
     res.status(500).json({ message: error.message });
   }
-}
+};
 
-export const applyCoupon = async (req, res) => { 
+export const applyCoupon = async (req, res) => {
   try {
     const userId = req.userId;
     const { couponCode } = req.body;
@@ -295,71 +308,80 @@ export const applyCoupon = async (req, res) => {
     if (!coupon) {
       return res.status(404).json({ message: "Coupon not found" });
     }
-    return res.status(200).json({ discount: coupon.discount, message: `Coupon ${couponCode} applied successfully` });
+    return res
+      .status(200)
+      .json({
+        discount: coupon.discount,
+        message: `Coupon ${couponCode} applied successfully`,
+      });
   } catch (error) {
     console.log("Error in applyCoupon", error);
     res.status(500).json({ message: error.message });
   }
-}
+};
 
-export const addToWishlist = async (req, res) => { 
+export const addToWishlist = async (req, res) => {
   try {
     const userId = req.userId;
     const { productId } = req.body;
 
-    if(!productId) {
+    if (!productId) {
       return res.status(400).json({ message: "Product ID is required" });
     }
     const product = await Product.findById(productId);
-    if(!product) {
+    if (!product) {
       return res.status(404).json({ message: "Product not found" });
     }
     const user = await User.findById(userId);
-    if(!user || user.role !== "User") {
+    if (!user || user.role !== "User") {
       return res.status(404).json({ message: "User not found" });
     }
 
-    if(user.wishList.includes(productId)) {
+    if (user.wishList.includes(productId)) {
       return res.status(400).json({ message: "Product already in wishlist" });
     }
 
     user.wishList.push(productId);
     await user.save();
-    return res.status(200).json({ message: "Product added to wishlist successfully" });
+    return res
+      .status(200)
+      .json({ message: "Product added to wishlist successfully" });
   } catch (error) {
     console.log("Error in addToWishlist", error);
     res.status(500).json({ message: error.message });
   }
-}
+};
 
-export const removeFromWishlist = async (req, res) => { 
+export const removeFromWishlist = async (req, res) => {
   try {
     const userId = req.userId;
     const { productId } = req.body;
 
-    if(!productId) {
+    if (!productId) {
       return res.status(400).json({ message: "Product ID is required" });
     }
 
     const user = await User.findById(userId);
-    if(!user || user.role !== "User") {
+    if (!user || user.role !== "User") {
       return res.status(404).json({ message: "User not found" });
     }
 
-    if(!user.wishList.includes(productId)) {
+    if (!user.wishList.includes(productId)) {
       return res.status(400).json({ message: "Product not in wishlist" });
     }
 
     user.wishList = user.wishList.filter((id) => id.toString() !== productId);
     await user.save();
-    return res.status(200).json({ message: "Product removed from wishlist successfully" });
+    return res
+      .status(200)
+      .json({ message: "Product removed from wishlist successfully" });
   } catch (error) {
     console.log("Error in removeFromWishlist", error);
     res.status(500).json({ message: error.message });
   }
-}
+};
 
-export const getWishlist = async (req, res) => { 
+export const getWishlist = async (req, res) => {
   try {
     const userId = req.userId;
     const user = await User.findById(userId).populate("wishList");
@@ -371,9 +393,9 @@ export const getWishlist = async (req, res) => {
     console.log("Error in getWishlist", error);
     res.status(500).json({ message: error.message });
   }
-}
+};
 
-export const clearWishlist = async (req, res) => { 
+export const clearWishlist = async (req, res) => {
   try {
     const userId = req.userId;
     const user = await User.findById(userId);
@@ -387,4 +409,4 @@ export const clearWishlist = async (req, res) => {
     console.log("Error in clearWishlist", error);
     res.status(500).json({ message: error.message });
   }
-}
+};

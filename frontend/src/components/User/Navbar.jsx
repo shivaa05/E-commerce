@@ -25,7 +25,7 @@ const Navbar = () => {
         {/* right */}
         <div className="flex items-center gap-5">
           <Heart className="size-6 cursor-pointer text-gray-700" />
-          <div className="relative" onClick={()=>navigate('/cart')}>
+          <div className="relative" onClick={() => navigate("/cart")}>
             <Handbag className="size-6  cursor-pointer text-gray-700" />
             <div className="absolute h-4 w-4 bg-[#ff3e6c] rounded-full -top-1 -right-1.5 flex justify-center items-center text-[10px] font-bold text-white">
               {cart.length}
@@ -79,11 +79,31 @@ const Navbar = () => {
             </div>
           </div>
 
-          <div className="absolute w-full bottom-0  text-lg font-semibold px-4 flex flex-col justify-center gap-2 pb-5">
-            <div>Profile</div>
+          <div className="absolute w-full bottom-0  text-lg font-semibold px-4 flex flex-col justify-center gap-4 pb-8">
+            <div
+              className="cursor-pointer"
+              onClick={() => {
+                navigate("/profile");
+                setSidePanelSmall(false);
+              }}
+            >
+              Profile
+            </div>
+            <div
+              className="cursor-pointer"
+              onClick={() => {
+                navigate("/my-orders");
+                setSidePanelSmall(false);
+              }}
+            >
+              My Orders
+            </div>
             <div
               className="flex gap-2 cursor-pointer items-center text-rose-600"
-              onClick={() => logoutFunction()}
+              onClick={() => {
+                logoutFunction();
+                setSidePanelSmall(false);
+              }}
             >
               <LogOut className="size-5" /> Logout
             </div>
@@ -130,11 +150,17 @@ const Navbar = () => {
 
       {/* right */}
       <div className="relative hidden md:flex items-center gap-7">
-        <div className="flex flex-col justify-center items-center text-xs font-semibold" onClick={()=>navigate("/wishlist")}>
+        <div
+          className="flex flex-col justify-center items-center text-xs font-semibold"
+          onClick={() => navigate("/wishlist")}
+        >
           <Heart className="size-5 cursor-pointer text-gray-700" />
           <div>Wishlist</div>
         </div>
-        <div className="relative flex flex-col justify-center items-center text-xs font-semibold" onClick={()=>navigate('/cart')}>
+        <div
+          className="relative flex flex-col justify-center items-center text-xs font-semibold"
+          onClick={() => navigate("/cart")}
+        >
           <Handbag className="size-5 cursor-pointer text-gray-700" />
           <div>Cart</div>
           <div className="absolute h-4 w-4 bg-[#ff3e6c] rounded-full -top-1 -right-1.5 flex justify-center items-center text-[10px] font-bold text-white">
@@ -150,13 +176,39 @@ const Navbar = () => {
 
         {/* Pop up for large screen */}
         {popUpLarge && (
-          <div className="hidden absolute top-12 right-0 bg-rose-100/70 backdrop-blur-xs px-3 py-2 rounded-lg md:flex flex-col gap-1 shadow-lg">
-            <div>Profile</div>
+          <div className="hidden absolute top-12 -right-4 bg-white border border-gray-100 shadow-xl px-4 py-3 rounded-lg md:flex flex-col gap-3 min-w-44 z-50">
+            <div className="border-b pb-2 mb-1">
+              <p className="font-semibold text-gray-800">{user?.name}</p>
+              <p className="text-xs text-gray-500 truncate">{user?.email}</p>
+            </div>
             <div
-              className="flex gap-2 cursor-pointer items-center text-rose-600"
-              onClick={() => logoutFunction()}
+              className="flex gap-2 cursor-pointer items-center text-gray-700 hover:text-rose-500 transition-colors"
+              onClick={() => {
+                navigate("/profile");
+                setPopUpLarge(false);
+              }}
             >
-              <LogOut className="size-5" /> Logout
+              Profile
+            </div>
+            <div
+              className="flex gap-2 cursor-pointer items-center text-gray-700 hover:text-rose-500 transition-colors"
+              onClick={() => {
+                navigate("/my-orders");
+                setPopUpLarge(false);
+              }}
+            >
+              My Orders
+            </div>
+            <div className="border-t pt-2 mt-1">
+              <div
+                className="flex gap-2 cursor-pointer items-center text-rose-600 hover:text-rose-700 transition-colors"
+                onClick={() => {
+                  logoutFunction();
+                  setPopUpLarge(false);
+                }}
+              >
+                <LogOut className="size-5" /> Logout
+              </div>
             </div>
           </div>
         )}

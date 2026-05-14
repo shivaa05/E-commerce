@@ -115,7 +115,7 @@ export const getUserProfile = async (req, res) => {
 export const updateUserProfile = async (req, res) => {
   try {
     const userId = req.userId;
-    const { name, email, password } = req.body;
+    const { name, email, newPassword, currentPassword } = req.body;
     const {profilePicture} = req.files || {};
 
     const user = await User.findById(userId); 
@@ -125,8 +125,12 @@ export const updateUserProfile = async (req, res) => {
 
     if (name) user.name = name;
     if (email) user.email = email;  
-    if (password) {
-      const hashedPassword = await bcrypt.hash(password, 10);
+    if (newPassword && currentPassword) {
+      const isMatch = await bcrypt.compare(currentPassword, user.password);
+      if (!isMatch) {
+        return res.status(400).json({ message: "Current password is incorrect" });
+      }
+      const hashedPassword = await bcrypt.hash(newPassword, 10);
       user.password = hashedPassword;
     }
     if (profilePicture) {

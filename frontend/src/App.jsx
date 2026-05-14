@@ -1,22 +1,24 @@
-import React, { useEffect } from 'react'
-import Signup from './pages/User/Signup'
-import Signin from './pages/User/Signin'
-import { Routes, Route, Navigate } from 'react-router-dom'
-import Home from './pages/User/Home'
-import { Toaster } from 'react-hot-toast'
-import Protected from './components/Protected'
-import { useAuthStore } from './store/AuthStore'
-import { useProductStore } from './store/ProductStore'
-import { useUserStore } from './store/UserStore'
-import Cart from './pages/User/Cart'
-import Wishlist from './pages/User/Wishlist'
+import React, { useEffect } from "react";
+import Signup from "./pages/User/Signup";
+import Signin from "./pages/User/Signin";
+import { Routes, Route, Navigate } from "react-router-dom";
+import Home from "./pages/User/Home";
+import { Toaster } from "react-hot-toast";
+import Protected from "./components/Protected";
+import { useAuthStore } from "./store/AuthStore";
+import { useProductStore } from "./store/ProductStore";
+import { useUserStore } from "./store/UserStore";
+import Cart from "./pages/User/Cart";
+import Wishlist from "./pages/User/Wishlist";
+import Profile from "./pages/User/Profile";
+import MyOrders from "./pages/User/MyOrders";
 const App = () => {
   const { user, fetchLoggedInUser } = useAuthStore();
   const { fetchAllProducts } = useProductStore();
-  const { getCartItems } = useUserStore();  
+  const { getCartItems } = useUserStore();
   useEffect(() => {
     fetchLoggedInUser();
-  },[])
+  }, []);
 
   useEffect(() => {
     fetchAllProducts();
@@ -42,10 +44,12 @@ const App = () => {
           <Route index element={<Home />} />
           <Route path="/cart" element={<Cart />} />
           <Route path="/wishlist" element={<Wishlist />} />
+          <Route path="/profile" element={<Profile />} />
+          <Route path="/my-orders" element={<MyOrders />} />
         </Route>
       </Routes>
     </div>
   );
-}
+};
 
-export default App
+export default App;

@@ -5,9 +5,24 @@ const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
 export const useUserStore = create((set, get) => ({
   cart: [],
+  orders: [],
   coupons: [],
   appliedCouponDiscount: null,
   appliedCoupon: null,
+
+  getMyOrders: async () => {
+    try {
+      const res = await axios.get(`${BACKEND_URL}/api/order/my-orders`, {
+        withCredentials: true,
+      });
+      set({ orders: res.data.order || res.data.orders || res.data }); // Adapting to whatever backend sends
+    } catch (error) {
+      console.log("error in getMyOrders function", error);
+      toast.error("Failed to fetch orders");
+      set({ orders: [] });
+    }
+  },
+
   getCartItems: async () => {
     try {
       const res = await axios.get(`${BACKEND_URL}/api/product/get-cart-items`, {
@@ -90,7 +105,7 @@ export const useUserStore = create((set, get) => ({
 
   applyCoupon: async (couponCode) => {
     try {
-      console.log("coupond Code",couponCode)
+      console.log("coupond Code", couponCode);
       const res = await axios.post(
         `${BACKEND_URL}/api/auth/apply-coupon`,
         { couponCode },
@@ -98,7 +113,10 @@ export const useUserStore = create((set, get) => ({
           withCredentials: true,
         },
       );
-      set({ appliedCouponDiscount: res.data.discount, appliedCoupon: couponCode });
+      set({
+        appliedCouponDiscount: res.data.discount,
+        appliedCoupon: couponCode,
+      });
       toast.success(res.data.message);
     } catch (error) {
       console.log("error in applyCoupon function", error);

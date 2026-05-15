@@ -5,15 +5,20 @@ import toast from "react-hot-toast";
 
 export const useProductStore = create((set, get) => ({
   products: [],
-  fetchAllProducts: async () => {
+  fetchAllProducts: async (page = 1) => {
     try {
-      const res = await axios.get(`${BACKEND_URL}/api/product/get-all`, {
-        withCredentials: true,
-      });
+      const res = await axios.get(
+        `${BACKEND_URL}/api/product/get-all?page=${page}&limit=12`,
+        {
+          withCredentials: true,
+        },
+      );
       set({ products: res.data.products });
+      return res.data.products;
     } catch (error) {
       console.log("error in fetchAllProducts function", error);
       set({ products: [] });
+      return [];
     }
   },
   addProduct: async (productData) => {

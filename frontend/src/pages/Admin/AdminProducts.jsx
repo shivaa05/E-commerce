@@ -1,6 +1,15 @@
 import React, { useState, useEffect } from "react";
 import AdminNav from "../../components/Admin/AdminNav";
-import { Plus, Edit2, Trash2, Tag, Package, Search } from "lucide-react";
+import {
+  Plus,
+  Edit2,
+  Trash2,
+  Tag,
+  Package,
+  Search,
+  ChevronLeft,
+  ChevronRight,
+} from "lucide-react";
 import { useProductStore } from "../../store/ProductStore";
 
 const AdminProducts = () => {
@@ -14,6 +23,9 @@ const AdminProducts = () => {
   } = useProductStore();
   const [activeTab, setActiveTab] = useState("products");
   const [searchTerm, setSearchTerm] = useState("");
+
+  const [page, setPage] = useState(1);
+  const [hasMore, setHasMore] = useState(true);
 
   // Modals state
   const [showProductModal, setShowProductModal] = useState(false);
@@ -35,9 +47,14 @@ const AdminProducts = () => {
   const [imagePreviews, setImagePreviews] = useState([]);
 
   useEffect(() => {
-    // Assuming backend data is not fully wired yet, fetching if necessary
-    fetchAllProducts();
-  }, []);
+    const loadProducts = async () => {
+      const fetchedProducts = await fetchAllProducts(page);
+      if (fetchedProducts) {
+        setHasMore(fetchedProducts.length === 12);
+      }
+    };
+    loadProducts();
+  }, [page, fetchAllProducts]);
 
   const handleEditStock = (product) => {
     setSelectedProduct(product);
@@ -302,6 +319,29 @@ const AdminProducts = () => {
                   )}
                 </tbody>
               </table>
+            </div>
+
+            {/* Pagination Controls */}
+            <div className="p-4 border-t border-gray-100 flex justify-between items-center bg-gray-50">
+              <button
+                onClick={() => setPage((prev) => Math.max(prev - 1, 1))}
+                disabled={page === 1}
+                className="flex items-center text-sm font-medium text-gray-600 bg-white border border-gray-300 rounded-lg px-3 py-1 hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                <ChevronLeft size={16} />
+                Previous
+              </button>
+              <span className="text-sm font-medium text-gray-700">
+                Page {page}
+              </span>
+              <button
+                onClick={() => setPage((prev) => prev + 1)}
+                disabled={!hasMore}
+                className="flex items-center text-sm font-medium text-gray-600 bg-white border border-gray-300 rounded-lg px-3 py-1 hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                Next
+                <ChevronRight size={16} />
+              </button>
             </div>
           </div>
         )}

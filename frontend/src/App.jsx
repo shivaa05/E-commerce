@@ -51,7 +51,7 @@ const App = () => {
             index
             element={user?.role === "User" ? <Home /> : <AdminHome />}
           />
-          <Route path="/cart" element={user?.role === "user" && <Cart />} />
+          <Route path="/cart" element={user?.role === "User" && <Cart />} />
           <Route
             path="/wishlist"
             element={user?.role === "User" && <Wishlist />}

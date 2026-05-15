@@ -67,13 +67,13 @@ const Profile = () => {
         <div className="w-full md:w-64 shrink-0">
           <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden flex flex-col">
             <div className="p-6 border-b border-gray-100 flex flex-col items-center">
-              <div className="w-24 h-24 bg-indigo-100 rounded-full flex items-center justify-center text-indigo-600 text-3xl font-bold shadow-sm mb-3">
+              <div className="w-24 h-24 bg-rose-100 rounded-full flex items-center justify-center text-rose-600 text-3xl font-bold shadow-sm mb-3">
                 {user?.name?.charAt(0).toUpperCase()}
               </div>
-              <h2 className="font-semibold text-gray-800 text-lg">
+              <h2 className="font-semibold text-[#EC003F] text-lg">
                 {user?.name}
               </h2>
-              <span className="px-3 py-1 bg-indigo-50 text-indigo-700 text-xs font-semibold rounded-full border border-indigo-100 mt-2">
+              <span className="px-3 py-1 bg-rose-50 text-[#EC003F] text-sm font-semibold rounded-full border border-rose-100 mt-2">
                 {user?.role || "User"}
               </span>
             </div>
@@ -81,14 +81,14 @@ const Profile = () => {
             <div className="p-2">
               <button
                 onClick={() => setActiveTab("profile")}
-                className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg text-left transition-colors ${activeTab === "profile" ? "bg-indigo-50 text-indigo-700 font-medium" : "text-gray-600 hover:bg-gray-50"}`}
+                className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg text-left transition-colors ${activeTab === "profile" ? "bg-rose-50 text-[#EC003F] font-medium" : "text-gray-600 hover:bg-gray-50"}`}
               >
                 <User className="w-5 h-5" />
                 Profile Information
               </button>
               <button
                 onClick={() => setActiveTab("security")}
-                className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg text-left transition-colors ${activeTab === "security" ? "bg-indigo-50 text-indigo-700 font-medium" : "text-gray-600 hover:bg-gray-50"}`}
+                className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg text-left transition-colors ${activeTab === "security" ? "bg-rose-50 text-[#EC003F] font-medium" : "text-gray-600 hover:bg-gray-50"}`}
               >
                 <Lock className="w-5 h-5" />
                 Change Password
@@ -98,7 +98,7 @@ const Profile = () => {
         </div>
 
         {/* Content Area */}
-        <div className="flex-1 bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden min-h-[400px]">
+        <div className="flex-1 bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden min-h-100">
           {/* PROFILE TAB */}
           {activeTab === "profile" && (
             <div className="p-6 md:p-8">
@@ -109,7 +109,7 @@ const Profile = () => {
                 {!isEditing ? (
                   <button
                     onClick={() => setIsEditing(true)}
-                    className="flex items-center gap-2 text-sm font-medium text-indigo-600 bg-indigo-50 px-4 py-2 rounded-lg hover:bg-indigo-100 transition-colors"
+                    className="flex items-center gap-2 text-sm font-medium text-[#EC003F] bg-rose-50 px-4 py-2 rounded-lg hover:bg-[#f7d2dc] transition-colors"
                   >
                     <Edit2 className="w-4 h-4" /> Edit Profile
                   </button>
@@ -171,7 +171,7 @@ const Profile = () => {
                       onChange={(e) =>
                         setProfileData({ ...profileData, name: e.target.value })
                       }
-                      className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-indigo-100 focus:border-indigo-400 outline-none transition-all"
+                      className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-rose-100 focus:border-rose-400 outline-none transition-all"
                       required
                     />
                   </div>
@@ -188,13 +188,13 @@ const Profile = () => {
                           email: e.target.value,
                         })
                       }
-                      className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-indigo-100 focus:border-indigo-400 outline-none transition-all"
+                      className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-rose-100 focus:border-rose-400 outline-none transition-all"
                       required
                     />
                   </div>
                   <button
                     type="submit"
-                    className="flex items-center justify-center gap-2 w-full md:w-auto px-6 py-3 bg-indigo-600 text-white font-medium rounded-lg hover:bg-indigo-700 transition-colors"
+                    className="flex items-center justify-center gap-2 w-full md:w-auto px-6 py-3 bg-rose-600 text-white font-medium rounded-lg hover:bg-rose-700 transition-colors"
                   >
                     <Save className="w-5 h-5" /> Save Changes
                   </button>
@@ -233,7 +233,7 @@ const Profile = () => {
                         currentPassword: e.target.value,
                       })
                     }
-                    className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-indigo-100 focus:border-indigo-400 outline-none transition-all"
+                    className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-rose-100 focus:border-rose-400 outline-none transition-all"
                     required
                   />
                 </div>
@@ -250,7 +250,7 @@ const Profile = () => {
                         newPassword: e.target.value,
                       })
                     }
-                    className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-indigo-100 focus:border-indigo-400 outline-none transition-all"
+                    className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-rose-100 focus:border-rose-400 outline-none transition-all"
                     required
                     minLength={6}
                   />
@@ -272,7 +272,7 @@ const Profile = () => {
                       passwordData.confirmPassword &&
                       passwordData.newPassword !== passwordData.confirmPassword
                         ? "border-red-300 focus:ring-red-100 focus:border-red-400"
-                        : "border-gray-300 focus:ring-indigo-100 focus:border-indigo-400"
+                        : "border-gray-300 focus:ring-rose-100 focus:border-rose-400"
                     }`}
                     required
                     minLength={6}
@@ -290,7 +290,7 @@ const Profile = () => {
                   disabled={
                     passwordData.newPassword !== passwordData.confirmPassword
                   }
-                  className="flex items-center justify-center gap-2 w-full md:w-auto px-6 py-3 bg-indigo-600 text-white font-medium rounded-lg hover:bg-indigo-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="flex items-center justify-center gap-2 w-full md:w-auto px-6 py-3 bg-rose-600 text-white font-medium rounded-lg hover:bg-rose-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   <Lock className="w-5 h-5" /> Update Password
                 </button>

@@ -7,7 +7,7 @@ const orderItemSchema = new mongoose.Schema(
       ref: "Product",
       required: true,
     },
-    quantity: { type: Number, required: true }
+    quantity: { type: Number, required: true },
   },
   { _id: false },
 );
@@ -38,6 +38,8 @@ const orderSchema = new mongoose.Schema(
       taxPrice: Number,
       shippingPrice: Number,
       totalPrice: Number,
+      couponDiscount: Number,
+      productDiscount: Number,
     },
 
     orderStatus: {

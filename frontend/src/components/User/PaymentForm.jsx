@@ -3,11 +3,11 @@ import { useUserStore } from "../../store/UserStore";
 import { useAuthStore } from "../../store/AuthStore";
 import axios from "axios";
 
-const PaymentForm = ({ amount }) => {
+const PaymentForm = ({ amount, couponDiscount }) => {
   const { cart, clearCart } = useUserStore();
   const { user } = useAuthStore();
   const [loading, setLoading] = useState(false);
-
+  console.log(couponDiscount)
   const handleSubmit = async (event) => {
     event.preventDefault();
     setLoading(true);
@@ -26,6 +26,8 @@ const PaymentForm = ({ amount }) => {
           postalCode: "123456",
           country: "India",
           state: "Default State",
+          couponDiscount: couponDiscount || 0,
+          // productDiscount: productDiscount || 0,
         },
         { withCredentials: true },
       );

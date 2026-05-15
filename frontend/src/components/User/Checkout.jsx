@@ -20,7 +20,7 @@ const Checkout = () => {
   const couponDiscount = appliedCouponDiscount
     ? appliedCouponDiscount / 100
     : 0;
-  const finalPrice = totalPrice() - totalPrice() * couponDiscount;
+  const finalPrice = totalPrice() - totalPrice() * couponDiscount + totalPrice() * 0.18; 
 
   useEffect(() => {
     fetchCoupons();
@@ -50,6 +50,12 @@ const Checkout = () => {
             <span className="font-bold">₹{totalPrice().toFixed(2)}</span>
           </div>
           <div className="flex justify-between items-center text-[#2c2d34]">
+            <span>Tax:</span>
+            <span className="font-bold">
+              ₹{(totalPrice() * 0.18).toFixed(2)}
+            </span>
+          </div>
+          <div className="flex justify-between items-center text-[#2c2d34]">
             <span>PRODUCT DISCOUNT:</span>
             <span className="text-teal-600 font-bold">- ₹0</span>
           </div>
@@ -66,7 +72,11 @@ const Checkout = () => {
         </div>
       </div>
 
-      <PaymentForm amount={finalPrice} />
+      <PaymentForm
+        amount={finalPrice}
+        couponDiscount={totalPrice() * couponDiscount}
+        // productDiscount={totalPrice() * productDiscount}
+      />
     </div>
   );
 };

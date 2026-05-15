@@ -95,12 +95,12 @@ const MyOrders = () => {
                       Total Amount
                     </div>
                     <div className="font-bold text-gray-900">
-                      ${order.pricing?.totalPrice?.toFixed(2) || "0.00"}
+                      ₹{order.pricing?.totalPrice?.toFixed(2) || "0.00"}
                     </div>
                   </div>
                   <div className="flex items-center gap-3">
                     <span
-                      className={`px-3 py-1 text-xs font-semibold rounded-full capitalize ${
+                      className={`px-3 py-1 text-xs font-semibold rounded-full capitalize ₹{
                         order.orderStatus === "Delivered"
                           ? "bg-green-100 text-green-800"
                           : order.orderStatus === "Processing" ||
@@ -154,7 +154,7 @@ const MyOrders = () => {
                             {item.product?.name || "Unavailable Product"}
                           </h3>
                           <p className="ml-4 whitespace-nowrap">
-                            ${(item.product?.price || 0).toFixed(2)}
+                            ₹{(item.product?.price || 0).toFixed(2)}
                           </p>
                         </div>
                       </div>
@@ -206,7 +206,7 @@ const MyOrders = () => {
                         <div className="flex justify-between">
                           <span>Payment Status:</span>
                           <span
-                            className={`font-medium ${order.paymentId?.paymentStatus === "Paid" ? "text-green-600" : "text-yellow-600"}`}
+                            className={`font-medium ₹{order.paymentId?.paymentStatus === "Paid" ? "text-green-600" : "text-yellow-600"}`}
                           >
                             {order.paymentId?.paymentStatus || "Pending"}
                           </span>
@@ -225,13 +225,25 @@ const MyOrders = () => {
                           <div className="flex justify-between">
                             <span>Subtotal:</span>
                             <span>
-                              ${order.pricing?.itemsPrice?.toFixed(2) || "0.00"}
+                              ₹{order.pricing?.itemsPrice?.toFixed(2) || "0.00"}
                             </span>
                           </div>
                           <div className="flex justify-between">
                             <span>Tax:</span>
                             <span>
-                              ${order.pricing?.taxPrice?.toFixed(2) || "0.00"}
+                              ₹{order.pricing?.taxPrice?.toFixed(2) || "0.00"}
+                            </span>
+                          </div>
+                          <div className="flex justify-between">
+                            <span>Coupon Discount:</span>
+                            <span>
+                              ₹{order.pricing?.couponDiscount?.toFixed(2) || "0.00"}
+                            </span>
+                          </div>
+                          <div className="flex justify-between">
+                            <span>Product Discount:</span>
+                            <span>
+                              ₹{order.pricing?.productDiscount?.toFixed(2) || "0.00"}
                             </span>
                           </div>
                           <div className="flex justify-between">
@@ -239,13 +251,13 @@ const MyOrders = () => {
                             <span>
                               {order.pricing?.shippingPrice === 0
                                 ? "Free"
-                                : `$${order.pricing?.shippingPrice?.toFixed(2)}`}
+                                : `₹₹{order.pricing?.shippingPrice?.toFixed(2)}`}
                             </span>
                           </div>
                           <div className="border-t border-gray-200 pt-2 mt-2 flex justify-between font-bold text-gray-900 text-base">
                             <span>Total:</span>
                             <span>
-                              ${order.pricing?.totalPrice?.toFixed(2) || "0.00"}
+                              ₹{order.pricing?.totalPrice?.toFixed(2) || "0.00"}
                             </span>
                           </div>
                         </div>

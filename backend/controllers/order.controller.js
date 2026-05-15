@@ -12,7 +12,7 @@ export const placeOrder = async (req, res) => {
     if (user.role === "Admin")
       return res.status(403).json({ message: "Admins cannot place orders" });
 
-    const { fullname, orderItems, address, city, postalCode, country, state } =
+    const { fullname, orderItems, address, city, postalCode, country, state,couponDiscount, productDiscount=0 } =
       req.body;
     if (
       !fullname ||
@@ -53,8 +53,7 @@ export const placeOrder = async (req, res) => {
     }
 
     const taxPrice = totalPrice * 0.18;
-    const finalPrice = totalPrice + taxPrice + shippingPrice;
-
+    const finalPrice = totalPrice + taxPrice + shippingPrice - couponDiscount - productDiscount;
     const order = await Order.create({
       user: userId,
       fullname,
@@ -71,6 +70,8 @@ export const placeOrder = async (req, res) => {
         taxPrice,
         shippingPrice,
         totalPrice: finalPrice,
+        couponDiscount,
+        productDiscount,
       },
     });
     await user.myOrders.push(order._id);

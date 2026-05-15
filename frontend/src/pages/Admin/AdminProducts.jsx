@@ -247,7 +247,7 @@ const AdminProducts = () => {
                         className="border-b border-gray-50 hover:bg-gray-50 transition-colors"
                       >
                         <td className="p-4 font-medium text-gray-900 flex items-center space-x-3">
-                          <div className="w-10 h-10 bg-gray-100 rounded flex flex-shrink-0 items-center justify-center overflow-hidden">
+                          <div className="w-10 h-10 bg-gray-100 rounded flex shrink-0 items-center justify-center overflow-hidden">
                             {product.images && product.images.length > 0 ? (
                               <img
                                 src={product.images[0]}
@@ -388,7 +388,7 @@ const AdminProducts = () => {
       {/* Modals placeholders */}
       {showProductModal && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-          <div className="bg-white rounded-xl p-6 w-[500px] shadow-lg">
+          <div className="bg-white rounded-xl p-6 w-125 shadow-lg">
             <h2 className="text-xl font-bold mb-4">
               {selectedProduct ? "Edit Product" : "Add New Product"}
             </h2>
@@ -489,7 +489,7 @@ const AdminProducts = () => {
 
       {showStockModal && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-          <div className="bg-white rounded-xl p-6 w-[400px] shadow-lg">
+          <div className="bg-white rounded-xl p-6 w-100 shadow-lg">
             <h2 className="text-xl font-bold mb-4">
               Update Stock: {selectedProduct?.name}
             </h2>

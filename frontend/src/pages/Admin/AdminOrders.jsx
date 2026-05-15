@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import AdminNav from "../../components/Admin/AdminNav";
-import { Search, Eye, Edit2 } from "lucide-react";
+import { Search, Eye, Edit2, ChevronLeft, ChevronRight } from "lucide-react";
 import axios from "axios";
 import toast from "react-hot-toast";
 
@@ -11,17 +11,26 @@ const AdminOrders = () => {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
 
+  // Pagination state
+  const [page, setPage] = useState(1);
+  const [hasMore, setHasMore] = useState(true);
+
   // For updating status
   const [editingOrderId, setEditingOrderId] = useState(null);
   const [newStatus, setNewStatus] = useState("");
 
-  const fetchOrders = async () => {
+  const fetchOrders = async (pageNum) => {
     try {
       setLoading(true);
-      const res = await axios.get(`${BACKEND_URL}/api/admin/get-all-orders`, {
-        withCredentials: true,
-      });
-      setOrders(res.data.order || []);
+      const res = await axios.get(
+        `${BACKEND_URL}/api/admin/get-all-orders?page=${pageNum}&limit=12`,
+        {
+          withCredentials: true,
+        },
+      );
+      const fetchedOrders = res.data.order || [];
+      setOrders(fetchedOrders);
+      setHasMore(fetchedOrders.length === 12);
     } catch (error) {
       console.error("Error fetching orders:", error);
       toast.error("Failed to load orders.");
@@ -31,8 +40,8 @@ const AdminOrders = () => {
   };
 
   useEffect(() => {
-    fetchOrders();
-  }, []);
+    fetchOrders(page);
+  }, [page]);
 
   const handleUpdateStatus = async (orderId) => {
     if (!newStatus) return;
@@ -45,7 +54,7 @@ const AdminOrders = () => {
       toast.success("Order status updated!");
       setEditingOrderId(null);
       setNewStatus("");
-      fetchOrders(); // Refresh to show new status
+      fetchOrders(page); // Refresh to show new status
     } catch (error) {
       console.error("Error updating status:", error);
       toast.error("Failed to update status");
@@ -229,6 +238,28 @@ const AdminOrders = () => {
                 )}
               </tbody>
             </table>
+          </div>
+
+          <div className="p-4 border-t border-gray-100 flex justify-between items-center bg-gray-50">
+            <button
+              onClick={() => setPage((prev) => Math.max(prev - 1, 1))}
+              disabled={page === 1}
+              className="flex items-center text-sm font-medium text-gray-600 bg-white border border-gray-300 rounded-lg px-3 py-1 hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              <ChevronLeft size={16} />
+              Previous
+            </button>
+            <span className="text-sm font-medium text-gray-700">
+              Page {page}
+            </span>
+            <button
+              onClick={() => setPage((prev) => prev + 1)}
+              disabled={!hasMore}
+              className="flex items-center text-sm font-medium text-gray-600 bg-white border border-gray-300 rounded-lg px-3 py-1 hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              Next
+              <ChevronRight size={16} />
+            </button>
           </div>
         </div>
       </div>

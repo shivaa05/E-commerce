@@ -1,6 +1,14 @@
 import React, { useState, useEffect } from "react";
 import AdminNav from "../../components/Admin/AdminNav";
-import { Search, Mail, Ban, Trash2, Tag } from "lucide-react";
+import {
+  Search,
+  Mail,
+  Ban,
+  Trash2,
+  Tag,
+  ChevronLeft,
+  ChevronRight,
+} from "lucide-react";
 import axios from "axios";
 import toast from "react-hot-toast";
 
@@ -11,18 +19,26 @@ const AdminCustomers = () => {
   const [customers, setCustomers] = useState([]);
   const [loading, setLoading] = useState(true);
 
+  const [page, setPage] = useState(1);
+  const [hasMore, setHasMore] = useState(true);
+
   // Coupon assigning state
   const [assigningUserId, setAssigningUserId] = useState(null);
   const [couponCode, setCouponCode] = useState("");
   const [discountPercentage, setDiscountPercentage] = useState("");
 
-  const fetchUsers = async () => {
+  const fetchUsers = async (pageNum = 1) => {
     try {
       setLoading(true);
-      const res = await axios.get(`${BACKEND_URL}/api/admin/get-all-users`, {
-        withCredentials: true,
-      });
-      setCustomers(res.data.users || []);
+      const res = await axios.get(
+        `${BACKEND_URL}/api/admin/get-all-users?page=${pageNum}&limit=12`,
+        {
+          withCredentials: true,
+        },
+      );
+      const fetchedUsers = res.data.users || [];
+      setCustomers(fetchedUsers);
+      setHasMore(fetchedUsers.length === 12);
     } catch (error) {
       console.error("Error fetching users:", error);
       toast.error("Failed to load customers.");
@@ -32,8 +48,8 @@ const AdminCustomers = () => {
   };
 
   useEffect(() => {
-    fetchUsers();
-  }, []);
+    fetchUsers(page);
+  }, [page]);
 
   const handleAssignCoupon = async (userId) => {
     if (!couponCode || !discountPercentage) {
@@ -273,6 +289,28 @@ const AdminCustomers = () => {
                 )}
               </tbody>
             </table>
+          </div>
+
+          <div className="p-4 border-t border-gray-100 flex justify-between items-center bg-gray-50">
+            <button
+              onClick={() => setPage((prev) => Math.max(prev - 1, 1))}
+              disabled={page === 1}
+              className="flex items-center text-sm font-medium text-gray-600 bg-white border border-gray-300 rounded-lg px-3 py-1 hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              <ChevronLeft size={16} />
+              Previous
+            </button>
+            <span className="text-sm font-medium text-gray-700">
+              Page {page}
+            </span>
+            <button
+              onClick={() => setPage((prev) => prev + 1)}
+              disabled={!hasMore}
+              className="flex items-center text-sm font-medium text-gray-600 bg-white border border-gray-300 rounded-lg px-3 py-1 hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              Next
+              <ChevronRight size={16} />
+            </button>
           </div>
         </div>
       </div>

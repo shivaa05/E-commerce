@@ -3,6 +3,7 @@ import {
   assignCouponToUser,
   deleteOrder,
   deleteUser,
+  getAllOrders,
   getAllUsers,
   removeCouponFromUser,
   updateOrderStatus,
@@ -14,9 +15,10 @@ import { isAuth } from "../middleware/isAuth.js";
 router.get("/get-all-users", isAuth, getAllUsers);
 router.delete("/delete-user/:id", isAuth, deleteUser);
 router.put("/update-user-role/:id", isAuth, updateUserRole);
-router.post("/assign-coupon/:id",isAuth,assignCouponToUser);
-router.post("/remove-coupon/:id",isAuth,removeCouponFromUser);
-// router.put("/update-order-status/:id", isAuth, updateOrderStatus);
+router.post("/assign-coupon/:id", isAuth, assignCouponToUser);
+router.post("/remove-coupon/:id", isAuth, removeCouponFromUser);
+router.get("/get-all-orders", isAuth, getAllOrders);
+router.put("/update-order-status/:id", isAuth, updateOrderStatus);
 // router.delete("/delete-order/:id", isAuth, deleteOrder);
 
 export default router;

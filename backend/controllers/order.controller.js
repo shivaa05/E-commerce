@@ -127,42 +127,6 @@ export const getOrderById = async (req, res) => {
   }
 }
 
-export const getAllOrders = async (req, res) => {
-  try {
-    const user = await User.findById(req.userId);
-    if (!user) {
-      return res.status(404).json({ message: "User not found" });
-    }
-    if (user.role !== "Admin") {
-      return res.status(403).json({ message: "Only admins can access all orders" });
-    }
-
-    const page = parseInt(req.query.page) || 1;
-    const limit = parseInt(req.query.limit) || 12;
-    const skip = (page - 1) * limit;
-
-    const order = await Order.find()
-      .populate("user", "name  profilePicture")
-      .populate(
-        "orderItems.product",
-        "name price images desciption ratingd category gender",
-      )
-      .populate("paymentId", "paymentType paymentStatus").skip(skip).limit(limit);
-    if (!order) {
-      return res.status(404).json({ message: "Order not found" });
-    }
-
-    if (user.role !== "Admin") {
-      return res.status(403).json({ message: "You are not the owner of this order" });
-    }
-    res.status(200).json({ order });
-    
-  } catch (error) {
-    console.error("Error fetching orders:", error);
-    res.status(500).json({ message: "Internal server error" });
-  }
-}
-
 export const myOrders = async (req, res) => { 
   try {
     const userId = req.userId;
